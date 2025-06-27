@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Anapana 437 - Guia para Respiração Mindfulness</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      background: #121212;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+    }
+
+    .circulo {
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+      background-color: #00d1ff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      cursor: pointer;
+      user-select: none;
+      transition: transform 1s ease-in-out, background-color 1s ease-in-out;
+    }
+
+    .fase {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .contador {
+      font-size: 1.8rem;
+      font-weight: bold;
+    }
+
+    .ciclos {
+      font-size: 0.8rem;
+      margin-top: 4px;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="circulo" id="circulo">
+    <div class="fase" id="faseTexto">Clique</div>
+    <div class="contador" id="contador">0</div>
+    <div class="ciclos">Ciclos: <span id="contadorCiclos">0</span></div>
+  </div>
+
+  <script>
+    const circulo = document.getElementById('circulo');
+    const faseTexto = document.getElementById('faseTexto');
+    const contadorElem = document.getElementById('contador');
+    const contadorCiclosElem = document.getElementById('contadorCiclos');
+
+    let cicloAtivo = false;
+    let timeoutIds = [];
+    let intervalId;
+    let ciclosConcluidos = 0;
+
+    function limparTudo() {
+      timeoutIds.forEach(id => clearTimeout(id));
+      timeoutIds = [];
+      clearInterval(intervalId);
+      contadorElem.textContent = '0';
+      faseTexto.textContent = 'Clique';
+      contadorCiclosElem.textContent = ciclosConcluidos;
+      circulo.style.transition = 'transform 0.5s ease-in-out, background-color 0.5s ease-in-out';
+      circulo.style.transform = 'scale(1)';
+      circulo.style.backgroundColor = '#00d1ff';
+    }
+
+    function contador(segundos) {
+      let atual = segundos;
+      contadorElem.textContent = atual;
+      clearInterval(intervalId);
+      intervalId = setInterval(() => {
+        atual--;
+        contadorElem.textContent = atual >= 0 ? atual : '';
+        if (atual <= 0) clearInterval(intervalId);
+      }, 1000);
+    }
+
+    function iniciarCiclo() {
+      if (!cicloAtivo) return;
+
+      // INSPIRAR - 4s
+      faseTexto.textContent = 'Inspirar';
+      circulo.style.backgroundColor = '#00d1ff';
+      circulo.style.transition = 'transform 4s ease-in-out, background-color 1s ease-in-out';
+      circulo.style.transform = 'scale(3)';
+      contador(4);
+
+      timeoutIds.push(setTimeout(() => {
+        if (!cicloAtivo) return;
+
+        // SEGURAR - 3s
+        faseTexto.textContent = 'Segurar';
+        circulo.style.backgroundColor = '#a770ff';
+        circulo.style.transition = 'transform 3s linear, background-color 1s ease-in-out';
+        circulo.style.transform = 'scale(3)';
+        contador(3);
+
+        timeoutIds.push(setTimeout(() => {
+          if (!cicloAtivo) return;
+
+          // EXPIRAR - 7s
+          faseTexto.textContent = 'Expirar';
+          circulo.style.backgroundColor = '#00ffa2';
+          circulo.style.transition = 'transform 7s ease-in-out, background-color 1s ease-in-out';
+          circulo.style.transform = 'scale(1)';
+          contador(7);
+
+          timeoutIds.push(setTimeout(() => {
+            if (!cicloAtivo) return;
+
+            ciclosConcluidos++;
+            contadorCiclosElem.textContent = ciclosConcluidos;
+            iniciarCiclo();
+          }, 7000));
+
+        }, 3000));
+
+      }, 4000));
+    }
+
+    circulo.addEventListener('click', () => {
+      if (!cicloAtivo) {
+        cicloAtivo = true;
+        iniciarCiclo();
+      } else {
+        cicloAtivo = false;
+        limparTudo();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+
+---
+
+### 🗂️ `.gitignore`
+```gitignore
+# Ignore arquivos de sistema
+.DS_Store
+Thumbs.db
+
+# Ignore backups
+*.bak
+*.tmp
+
+# Ignore pastas de IDE
+.vscode/
+.idea/
+
+# Ignore arquivos do sistema operacional
+desktop.ini
