@@ -1,4 +1,4 @@
-# 🌀 Anapana_437 – Respiração guiada para o silêncio interno
+# 🌀 Anapana_437 – Respiração guiada por imagem
 
 Projeto pessoal de Mindfulness baseado no ritmo 4-3-7. Desenvolvido com HTML, CSS e JavaScript puro, o Anapana_437 oferece uma prática simples de atenção plena — direto no navegador.
 
